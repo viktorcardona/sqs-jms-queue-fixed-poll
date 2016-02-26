@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+	<appender name="A1" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="${catalina.base}/logs/sqs-queue-fixed-poll.log" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
+	<appender name="ASYNC" class="org.apache.log4j.AsyncAppender">
+		<param name="blocking" value="false" />
+		<param name="LocationInfo" value="true" />
+		<appender-ref ref="A1" />
+	</appender>
+
+    <!-- force httpclient and other loggers to a warn only state as default -->
+    <logger name="org.apache">
+        <level value="WARN" />
+    </logger>
+
+    <root>
+        <priority value="info"></priority>
+        <appender-ref ref="ASYNC" />
+    </root>
+
+</log4j:configuration>
